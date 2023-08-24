@@ -1,0 +1,19 @@
+% move/3 defines the rule for moving a single disk from one peg to another.
+move(1, Source, Destination, _) :-
+    write('Move top disk from '),
+    write(Source),
+    write(' to '),
+    write(Destination),
+    nl.
+move(N, Source, Destination, Temporary) :-
+    N > 1,
+    M is N - 1,
+    move(M, Source, Temporary, Destination), % Move N-1 disks from Source to Temporary peg using Destination peg as auxiliary.
+    move(1, Source, Destination, _),         % Move the remaining disk from Source to Destination peg.
+    move(M, Temporary, Destination, Source). % Move N-1 disks from Temporary to Destination peg using Source peg as auxiliary.
+
+% hanoi/3 is the main predicate that solves the Towers of Hanoi puzzle for N disks.
+hanoi(N) :-
+    move(N, 'Source', 'Destination', 'Temporary'). % Call the move predicate with initial Source peg, Destination peg, and Temporary peg.
+
+% Example usage: hanoi(3).
